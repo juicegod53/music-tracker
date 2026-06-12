@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <title>Music Tracker</title>
+</head>
+<body id="main-body">
+    <h1 id="title">Music Tracker</h1>
+    <div id="search-container">
+        <form method="GET" action="/search">
+            <input type="text" name="q" placeholder="Search albums..." value="{{ query or '' }}" id="search-bar">
+            <button id="search-button" type="submit">🔍</button>
+        </form>
+    </div>
+    <h1>Add album</h1>
+    <form method="POST" action="/add" enctype="multipart/form-data">
+        <div class="add-album-bar">
+            <label class="add-album-label">Title</label>
+            <input name="title">
+        </div>
+        <div class="add-album-bar">
+            <label class="add-album-label">Artist</label>
+            <input name="artist">
+        </div>
+        <div class="add-album-bar">
+            <label class="add-album-label">Year</label>
+            <input name="year">
+        </div>
+        <div class="add-album-bar">
+            <label class="add-album-label">Cover</label>
+            <input type="file" name="cover">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    <h1>My collection</h1>
+    {% for album in albums %}
+    <div class="album">
+    <img src="/{{ album[5] or 'static/covers/default.jpg' }}" height="200">
+        {{ loop.index }}. {{ album[1] }}, {{ album[2] }}, {{ album[3] }}
+        <form method="POST" action="/rate/{{ album[0] }}">
+            <input type="number" name="rating" min="0" max="10" value="{{ album[4] }}" autocomplete="off">
+            <button type="submit">Update</button>
+        </form>
+        <a href="/delete/{{ album[0] }}">Delete</a>
+    </div>
+    {% endfor %}
+</body>
+</html>

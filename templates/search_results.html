@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/styles/styles.css">
+    </head>
+    <body id="search-body">
+        <h1 id="search-title">Search Results</h1>
+        <div id="search-results">
+            {% for album in albums %}
+            <div class="search-result">
+                <img class="search-img" src="{{ album.artworkUrl100 }}">
+                <div class="search-info">
+                    <p>{{ album.collectionName }}</p>
+                    <p>by {{ album.artistName }} ({{ album.releaseDate[:4] }})</p>
+                    <form method="POST" action="/add">
+                        <input type="hidden" name="title" value="{{ album.collectionName }}">
+                        <input type="hidden" name="artist" value="{{ album.artistName }}">
+                        <input type="hidden" name="year" value="{{ album.releaseDate[:4] }}">
+                        <input type="hidden" name="cover_url" value="{{ album.artworkUrl100.replace('100x100', '600x600') }}">
+                        <button class="search-add-button" type="submit">Add to Collection</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>
